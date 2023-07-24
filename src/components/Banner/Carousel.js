@@ -1,20 +1,23 @@
-import { makeStyles } from "@material-ui/core";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import AliceCarousel from "react-alice-carousel";
-import { Link } from "react-router-dom";
-import { TrendingCoins } from "../../config/api";
-import { CryptoState } from "../../CryptoContext";
-import { numberWithCommas } from "../CoinsTable";
+import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import AliceCarousel from 'react-alice-carousel';
+import { Link } from 'react-router-dom';
+import { TrendingCoins } from '../../config/api';
+import { CryptoState } from '../../CryptoContext';
+import { numberWithCommas } from '../CoinsTable';
 
 const Carousel = () => {
   const [trending, setTrending] = useState([]);
   const { currency, symbol } = CryptoState();
 
   const fetchTrendingCoins = async () => {
-    const { data } = await axios.get(TrendingCoins(currency));
-
-    setTrending(data);
+    try {
+      const { data } = await axios.get(TrendingCoins(currency));
+      setTrending(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -24,17 +27,17 @@ const Carousel = () => {
 
   const useStyles = makeStyles((theme) => ({
     carousel: {
-      height: "50%",
-      display: "flex",
-      alignItems: "center",
+      height: '50%',
+      display: 'flex',
+      alignItems: 'center',
     },
     carouselItem: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      cursor: "pointer",
-      textTransform: "uppercase",
-      color: "white",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      cursor: 'pointer',
+      textTransform: 'uppercase',
+      color: 'white',
     },
   }));
 
@@ -48,7 +51,7 @@ const Carousel = () => {
         <img
           src={coin?.image}
           alt={coin.name}
-          height="80"
+          height='80'
           style={{ marginBottom: 10 }}
         />
         <span>
@@ -56,11 +59,11 @@ const Carousel = () => {
           &nbsp;
           <span
             style={{
-              color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+              color: profit > 0 ? 'rgb(14, 203, 129)' : 'red',
               fontWeight: 500,
             }}
           >
-            {profit && "+"}
+            {profit && '+'}
             {coin?.price_change_percentage_24h?.toFixed(2)}%
           </span>
         </span>
